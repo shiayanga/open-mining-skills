@@ -1,0 +1,36 @@
+{
+  "models": [
+    {
+      "modelId": "MODEL-WORKER",
+      "mineId": "MINE-001",
+      "name": "Worker low-poly",
+      "assetUrl": "/models/worker.glb",
+      "nodes": ["Worker_Main", "Worker_Lamp"],
+      "coordinateSystemId": 1001
+    },
+    {
+      "modelId": "MODEL-MARKER",
+      "mineId": "MINE-001",
+      "name": "Personnel marker",
+      "assetUrl": "/models/marker.glb",
+      "nodes": ["Marker"],
+      "coordinateSystemId": 1001
+    },
+    {
+      "modelId": "MODEL-EXCAVATOR",
+      "mineId": "MINE-001",
+      "name": "Excavator",
+      "assetUrl": "/models/excavator.glb",
+      "nodes": ["Excavator_Main"],
+      "coordinateSystemId": 1001
+    },
+    {
+      "modelId": "MODEL-MONITOR",
+      "mineId": "MINE-001",
+      "name": "Gas sensor",
+      "assetUrl": "/models/sensor.glb",
+      "nodes": ["Monitor_Main"],
+      "coordinateSystemId": 1001
+    }
+  ]
+}

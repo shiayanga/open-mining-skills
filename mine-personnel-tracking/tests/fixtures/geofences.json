@@ -1,0 +1,15 @@
+{
+  "geofences": [
+    {
+      "geofenceId": "GF-001",
+      "name": "Working face A",
+      "mineId": "MINE-001",
+      "polygon": [
+        [10.0, 10.0],
+        [20.0, 10.0],
+        [20.0, 20.0],
+        [10.0, 20.0]
+      ]
+    }
+  ]
+}

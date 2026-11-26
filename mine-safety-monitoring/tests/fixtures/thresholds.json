@@ -1,0 +1,17 @@
+{
+  "version": "2026.11-v1",
+  "thresholds": [
+    {
+      "deviceType": "CH4_SENSOR",
+      "metricCode": "CH4",
+      "warningHigh": 0.8,
+      "alarmHigh": 1.0
+    },
+    {
+      "deviceType": "TEMP_SENSOR",
+      "metricCode": "TEMP",
+      "warningHigh": 40.0,
+      "alarmHigh": 50.0
+    }
+  ]
+}

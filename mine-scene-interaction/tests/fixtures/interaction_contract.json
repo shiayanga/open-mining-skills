@@ -1,0 +1,197 @@
+{
+  "contractVersion": "0.1",
+  "sceneId": "SCENE-001",
+  "mineId": "MINE-001",
+  "entities": [
+    {
+      "entityId": "PERSON-001",
+      "entityType": "PERSON"
+    },
+    {
+      "entityId": "MONITOR-001",
+      "entityType": "MONITOR_DEVICE"
+    },
+    {
+      "entityId": "MACHINERY-001",
+      "entityType": "MACHINERY"
+    },
+    {
+      "entityId": "INFRA-001",
+      "entityType": "INFRASTRUCTURE"
+    }
+  ],
+  "handlers": [
+    {
+      "id": "pick-default",
+      "type": "pick",
+      "event": "LEFT_CLICK",
+      "entityTypes": [
+        "PERSON",
+        "MONITOR_DEVICE",
+        "MACHINERY",
+        "INFRASTRUCTURE"
+      ]
+    },
+    {
+      "id": "select-default",
+      "type": "select",
+      "entityTypes": [
+        "PERSON",
+        "MONITOR_DEVICE",
+        "MACHINERY",
+        "INFRASTRUCTURE"
+      ],
+      "highlight": {
+        "color": "#00FFFF",
+        "outlineWidth": 2
+      }
+    },
+    {
+      "id": "flyto-default",
+      "type": "flyTo",
+      "duration": 2.0,
+      "entityTypes": [
+        "PERSON",
+        "MACHINERY",
+        "INFRASTRUCTURE"
+      ]
+    },
+    {
+      "id": "filter-default",
+      "type": "filter",
+      "fields": [
+        "entityType",
+        "status",
+        "areaId",
+        "online",
+        "alarm"
+      ]
+    },
+    {
+      "id": "panel-default",
+      "type": "panel",
+      "entityTypes": [
+        "PERSON",
+        "MONITOR_DEVICE",
+        "MACHINERY"
+      ],
+      "panels": [
+        {
+          "id": "person-panel",
+          "entityType": "PERSON",
+          "fields": [
+            "name",
+            "department",
+            "lastSeen",
+            "status"
+          ]
+        },
+        {
+          "id": "monitor-panel",
+          "entityType": "MONITOR_DEVICE",
+          "fields": [
+            "metricCode",
+            "currentValue",
+            "threshold",
+            "status"
+          ]
+        },
+        {
+          "id": "machinery-panel",
+          "entityType": "MACHINERY",
+          "fields": [
+            "model",
+            "speed",
+            "engineStatus",
+            "areaId"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "track-default",
+      "type": "track",
+      "entityTypes": [
+        "PERSON",
+        "MACHINERY"
+      ],
+      "channelId": "twin-events",
+      "playback": {
+        "defaultSpeed": 1.0,
+        "interpolation": "LINEAR"
+      }
+    }
+  ],
+  "permissionRules": [
+    {
+      "id": "person-view",
+      "action": "VIEW_PERSON",
+      "entityTypes": [
+        "PERSON"
+      ],
+      "roles": [
+        "MINE_MANAGER",
+        "DISPATCHER"
+      ],
+      "scope": "MINE"
+    },
+    {
+      "id": "person-track",
+      "action": "VIEW_TRACK",
+      "entityTypes": [
+        "PERSON"
+      ],
+      "roles": [
+        "MINE_MANAGER",
+        "DISPATCHER"
+      ],
+      "scope": "MINE"
+    },
+    {
+      "id": "machinery-track",
+      "action": "VIEW_TRACK",
+      "entityTypes": [
+        "MACHINERY"
+      ],
+      "roles": [
+        "DISPATCHER"
+      ],
+      "scope": "MINE"
+    },
+    {
+      "id": "device-view",
+      "action": "VIEW_DEVICE",
+      "entityTypes": [
+        "MONITOR_DEVICE"
+      ],
+      "roles": [
+        "SAFETY_OFFICER"
+      ],
+      "scope": "MINE"
+    }
+  ],
+  "eventChannels": [
+    {
+      "id": "twin-events",
+      "name": "mine.twin.events",
+      "transport": "WEBSOCKET",
+      "eventTypes": [
+        "ENTITY_POSITION_UPDATE",
+        "ENTITY_STATUS_UPDATE",
+        "ENTITY_ALARM"
+      ]
+    }
+  ],
+  "trackPlayback": {
+    "defaultSpeed": 2.0,
+    "speedOptions": [
+      0.5,
+      1,
+      2,
+      4,
+      8
+    ],
+    "maxPoints": 5000,
+    "interpolation": "LINEAR"
+  }
+}

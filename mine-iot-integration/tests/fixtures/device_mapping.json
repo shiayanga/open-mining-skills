@@ -1,0 +1,22 @@
+{
+  "devices": [
+    {
+      "sourceDeviceId": "TL-1001",
+      "entityId": "PERSON-001",
+      "entityType": "PERSON",
+      "mineId": "MINE-001"
+    },
+    {
+      "sourceDeviceId": "TL-2001",
+      "entityId": "MACHINERY-001",
+      "entityType": "MACHINERY",
+      "mineId": "MINE-001"
+    },
+    {
+      "sourceDeviceId": "TL-3001",
+      "entityId": "MONITOR-001",
+      "entityType": "MONITOR_DEVICE",
+      "mineId": "MINE-001"
+    }
+  ]
+}

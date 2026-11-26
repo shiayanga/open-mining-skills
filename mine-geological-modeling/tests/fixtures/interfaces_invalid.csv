@@ -1,0 +1,12 @@
+x,y,z,series,surface,dip,azimuth
+100,100,120,overburden,topsoil,5,90
+300,100,118,overburden,topsoil,120,95
+500,100,121,overburden,topsoil,4,400
+100,400,105,overburden,clay,,,
+300,400,103,overburden,clay,,,
+500,400,107,ore,clay,,,
+100,700,90,ore,ore_body,15,120
+300,700,88,ore,ore_body,,,
+500,700,92,ore,ore_body,12,110
+100,100,120,overburden,topsoil,5,90
+200,300,abc,overburden,clay,,,

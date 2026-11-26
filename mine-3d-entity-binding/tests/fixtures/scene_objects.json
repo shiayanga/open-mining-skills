@@ -1,0 +1,44 @@
+{
+  "sceneObjects": [
+    {
+      "objectId": "OBJ-PERSON-001",
+      "mineId": "MINE-001",
+      "sceneId": "SCENE-001",
+      "objectType": "PERSON_MODEL",
+      "name": "Miner A model",
+      "modelId": "MODEL-WORKER",
+      "modelNodeId": "Worker_Main",
+      "coordinateSystemId": 1001
+    },
+    {
+      "objectId": "OBJ-PERSON-MARKER-001",
+      "mineId": "MINE-001",
+      "sceneId": "SCENE-001",
+      "objectType": "PERSON_MARKER",
+      "name": "Miner A marker",
+      "modelId": "MODEL-MARKER",
+      "modelNodeId": "Marker",
+      "coordinateSystemId": 1001
+    },
+    {
+      "objectId": "OBJ-EXCAVATOR-001",
+      "mineId": "MINE-001",
+      "sceneId": "SCENE-001",
+      "objectType": "MACHINERY_MODEL",
+      "name": "Excavator model",
+      "modelId": "MODEL-EXCAVATOR",
+      "modelNodeId": "Excavator_Main",
+      "coordinateSystemId": 1001
+    },
+    {
+      "objectId": "OBJ-MONITOR-001",
+      "mineId": "MINE-001",
+      "sceneId": "SCENE-001",
+      "objectType": "MONITOR_MODEL",
+      "name": "Sensor model",
+      "modelId": "MODEL-MONITOR",
+      "modelNodeId": "Monitor_Main",
+      "coordinateSystemId": 1001
+    }
+  ]
+}

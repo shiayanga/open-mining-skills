@@ -1,0 +1,121 @@
+{
+  "sceneId": "SCENE-001",
+  "mineId": "MINE-001",
+  "coordinateSystemId": "MINE-LOCAL-001",
+  "axisConvention": "X_EAST_Y_NORTH_Z_UP",
+  "terrain": {
+    "type": "cesium-terrain",
+    "uri": "/terrain",
+    "maximumScreenSpaceError": 8
+  },
+  "layers": [
+    {
+      "id": "base-terrain",
+      "name": "地表地形",
+      "type": "TERRAIN",
+      "visible": true
+    },
+    {
+      "id": "pit",
+      "name": "采坑与边坡",
+      "type": "TILESET",
+      "visible": true
+    },
+    {
+      "id": "facilities",
+      "name": "工程设施",
+      "type": "MODEL",
+      "visible": true
+    },
+    {
+      "id": "equipment",
+      "name": "工程机械",
+      "type": "MODEL",
+      "visible": true,
+      "opacity": 1.0
+    },
+    {
+      "id": "alarms",
+      "name": "告警图层",
+      "type": "ALARM",
+      "visible": false
+    }
+  ],
+  "tilesets": [
+    {
+      "id": "pit-tileset",
+      "layerId": "pit",
+      "uri": "/tiles/pit/tileset.json",
+      "transform": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "maximumScreenSpaceError": 16
+    }
+  ],
+  "models": [
+    {
+      "id": "excavator-01",
+      "layerId": "equipment",
+      "uri": "/models/excavator.glb",
+      "transform": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": 1.0
+    }
+  ],
+  "cameraBookmarks": [
+    {
+      "id": "pit-overview",
+      "name": "采坑全景",
+      "destination": {
+        "x": 120.0,
+        "y": -80.0,
+        "z": 260.0
+      },
+      "orientation": {
+        "heading": 0,
+        "pitch": -45,
+        "roll": 0
+      }
+    },
+    {
+      "id": "local-origin",
+      "name": "场景原点",
+      "destination": {
+        "x": 0,
+        "y": 0,
+        "z": 180.0
+      }
+    }
+  ]
+}

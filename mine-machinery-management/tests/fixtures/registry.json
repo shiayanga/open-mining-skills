@@ -1,0 +1,20 @@
+{
+  "machinery": [
+    {
+      "machineryId": "EXC-001",
+      "machineryType": "EXCAVATOR",
+      "model": "excavator.glb",
+      "modelNodeId": "Excavator_Main",
+      "mineId": "MINE-001",
+      "name": "Excavator 1"
+    },
+    {
+      "machineryId": "TRUCK-001",
+      "machineryType": "HAUL_TRUCK",
+      "model": "haul_truck.glb",
+      "modelNodeId": "Truck_Main",
+      "mineId": "MINE-001",
+      "name": "Haul truck 1"
+    }
+  ]
+}

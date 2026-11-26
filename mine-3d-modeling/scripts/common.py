@@ -1,0 +1,66 @@
+"""Shared helpers for the mine 3D modeling skill."""
+
+from __future__ import annotations
+
+import hashlib
+import json
+import os
+from pathlib import Path
+from typing import Any
+
+
+def file_sha256(path: str | os.PathLike[str], chunk_size: int = 1024 * 1024) -> str:
+    """Return the SHA-256 checksum of a file."""
+    digest = hashlib.sha256()
+    with open(path, "rb") as fh:
+        for chunk in iter(lambda: fh.read(chunk_size), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def source_manifest(path: str | os.PathLike[str]) -> dict[str, Any]:
+    """Return a small provenance manifest for a source file."""
+    p = Path(path)
+    return {
+        "path": str(p.resolve()),
+        "name": p.name,
+        "size_bytes": p.stat().st_size,
+        "sha256": file_sha256(p),
+    }
+
+
+def read_text(path: str | os.PathLike[str], encoding: str | None = None) -> tuple[str, str]:
+    """Read a text file, trying common encodings when none is given."""
+    encodings = [encoding] if encoding else ["utf-8-sig", "utf-8", "gbk", "latin-1"]
+    for enc in encodings:
+        if not enc:
+            continue
+        try:
+            return Path(path).read_text(encoding=enc), enc
+        except UnicodeDecodeError:
+            continue
+    raise SystemExit(f"Unable to decode file: {path}")
+
+
+def write_json(path: str | os.PathLike[str], data: Any) -> None:
+    out = Path(path)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    with out.open("w", encoding="utf-8") as fh:
+        json.dump(data, fh, ensure_ascii=False, indent=2)
+        fh.write("\n")
+
+
+def write_text(path: str | os.PathLike[str], text: str) -> None:
+    out = Path(path)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(text, encoding="utf-8")
+
+
+def fmt(value: float | int | None, digits: int = 4) -> str:
+    if value is None:
+        return "-"
+    if isinstance(value, float):
+        if value != 0.0 and abs(value) < 10 ** (-digits):
+            return f"{value:.2e}"
+        return f"{value:.{digits}f}".rstrip("0").rstrip(".")
+    return str(value)

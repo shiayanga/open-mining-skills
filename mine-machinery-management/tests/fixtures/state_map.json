@@ -1,0 +1,21 @@
+{
+  "states": {
+    "WORKING": {
+      "animation": "Excavator_Work",
+      "loop": true,
+      "speedScale": 1.0
+    },
+    "IDLE": {
+      "animation": "Excavator_Idle",
+      "loop": true
+    },
+    "HAULING": {
+      "animation": "Truck_Haul",
+      "loop": true
+    },
+    "FAULT": {
+      "animation": "Machinery_Fault",
+      "loop": false
+    }
+  }
+}

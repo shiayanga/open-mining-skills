@@ -1,0 +1,49 @@
+{
+  "bindings": [
+    {
+      "bindingId": "BIND-001",
+      "entityId": "PERSON-001",
+      "objectId": "OBJ-PERSON-001",
+      "bindingType": "ENTITY_MODEL",
+      "modelId": "MODEL-WORKER",
+      "modelNodeId": "Worker_Main",
+      "isPrimary": true,
+      "active": true,
+      "coordinateSystemId": 1001,
+      "sourceEntityId": "HR-2026-001"
+    },
+    {
+      "bindingId": "BIND-002",
+      "entityId": "PERSON-001",
+      "objectId": "OBJ-PERSON-MARKER-001",
+      "bindingType": "ENTITY_MARKER",
+      "isPrimary": false,
+      "active": true,
+      "coordinateSystemId": 1001
+    },
+    {
+      "bindingId": "BIND-003",
+      "entityId": "MACHINERY-001",
+      "objectId": "OBJ-EXCAVATOR-001",
+      "bindingType": "ENTITY_MODEL",
+      "modelId": "MODEL-EXCAVATOR",
+      "modelNodeId": "Excavator_Main",
+      "isPrimary": true,
+      "active": true,
+      "coordinateSystemId": 1001,
+      "sourceEntityId": "TL-DEVICE-1001"
+    },
+    {
+      "bindingId": "BIND-004",
+      "entityId": "MONITOR-001",
+      "objectId": "OBJ-MONITOR-001",
+      "bindingType": "ENTITY_MODEL",
+      "modelId": "MODEL-MONITOR",
+      "modelNodeId": "Monitor_Main",
+      "isPrimary": true,
+      "active": true,
+      "coordinateSystemId": 1001,
+      "sourceEntityId": "TL-DEVICE-2001"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "sceneId": "SCENE-001",
+  "mineId": "MINE-001",
+  "bindings": [
+    {
+      "bindingId": "BIND-PERSON-001",
+      "entityId": "PERSON-001",
+      "entityType": "PERSON",
+      "objectId": "SCENE-OBJECT-PERSON-001",
+      "modelId": "MODEL-PERSON-01"
+    },
+    {
+      "bindingId": "BIND-MONITOR-001",
+      "entityId": "MONITOR-001",
+      "entityType": "MONITOR_DEVICE",
+      "objectId": "SCENE-OBJECT-MONITOR-001",
+      "modelId": "MODEL-SENSOR-01"
+    },
+    {
+      "bindingId": "BIND-MACHINERY-001",
+      "entityId": "MACHINERY-001",
+      "entityType": "MACHINERY",
+      "objectId": "SCENE-OBJECT-MACHINERY-001",
+      "modelId": "MODEL-EXCAVATOR-01",
+      "modelNodeId": "Excavator_Main"
+    },
+    {
+      "bindingId": "BIND-INFRA-001",
+      "entityId": "INFRA-001",
+      "entityType": "INFRASTRUCTURE",
+      "objectId": "SCENE-OBJECT-INFRA-001"
+    }
+  ]
+}

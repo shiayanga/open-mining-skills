@@ -1,0 +1,4 @@
+borehole_id,x,y,z,series,surface
+BH-01,200,250,110,overburden,topsoil
+BH-01,200,250,100,overburden,clay
+BH-02,400,650,95,ore,ore_body

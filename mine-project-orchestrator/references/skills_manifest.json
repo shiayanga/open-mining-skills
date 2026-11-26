@@ -1,0 +1,662 @@
+{
+  "manifestVersion": "0.1",
+  "skills": [
+    {
+      "name": "mine-data-inspection",
+      "stage": "intake",
+      "description": "Inspect raw mine files and report format, layers, extents and data quality.",
+      "keywords": [
+        "数据检查",
+        "数据巡检",
+        "原始数据",
+        "inspect",
+        "inspection",
+        "dxf",
+        "dwg",
+        "xyz",
+        "csv"
+      ],
+      "inputs": [
+        "raw DWG/DXF/XYZ/CSV files",
+        "point cloud files"
+      ],
+      "outputs": [
+        "data_inspection_report.json",
+        "data_inspection_report.md"
+      ],
+      "acceptance": [
+        "Every format, layer, extent and coordinate clue is reported without guessing.",
+        "Unsupported inputs and skipped rows are listed explicitly."
+      ],
+      "consumes": [],
+      "produces": [
+        "inspection_report"
+      ],
+      "requires": [],
+      "dependsOn": []
+    },
+    {
+      "name": "mine-cad-parser",
+      "stage": "parse",
+      "description": "Parse DXF drawings into structured geometry, layers and annotations.",
+      "keywords": [
+        "cad",
+        "dxf",
+        "dwg",
+        "解析",
+        "提取",
+        "图纸",
+        "图层",
+        "polyline",
+        "块引用"
+      ],
+      "inputs": [
+        "DXF drawing",
+        "data inspection report"
+      ],
+      "outputs": [
+        "geometry.geojson",
+        "geometry_index.csv",
+        "layers.json",
+        "parse_report.json"
+      ],
+      "acceptance": [
+        "Entity counts reconcile with the inspection report.",
+        "Unsupported entities and skipped items are reported with reasons."
+      ],
+      "consumes": [
+        "inspection_report",
+        "raw_cad"
+      ],
+      "produces": [
+        "cad_geometry",
+        "cad_layers"
+      ],
+      "requires": [
+        "inspection_report"
+      ],
+      "dependsOn": []
+    },
+    {
+      "name": "mine-coordinate-registration",
+      "stage": "coordinate",
+      "description": "Analyze, transform and register mine engineering coordinates.",
+      "keywords": [
+        "坐标",
+        "坐标系",
+        "配准",
+        "转换",
+        "control point",
+        "registration",
+        "七参数",
+        "四参数",
+        "epsg"
+      ],
+      "inputs": [
+        "control points",
+        "points to transform",
+        "coordinate metadata"
+      ],
+      "outputs": [
+        "transformation.json",
+        "registration_report.json",
+        "transformed_points.csv"
+      ],
+      "acceptance": [
+        "Control point residuals, RMSE and transformation parameters are reported.",
+        "Insufficient, collinear or coincident control points stop the workflow."
+      ],
+      "consumes": [
+        "cad_geometry",
+        "survey_points",
+        "control_points"
+      ],
+      "produces": [
+        "transformation",
+        "registered_points"
+      ],
+      "requires": [],
+      "dependsOn": []
+    },
+    {
+      "name": "mine-terrain-modeling",
+      "stage": "modeling",
+      "description": "Reconstruct mine terrain from contours, survey points and breaklines.",
+      "keywords": [
+        "地形",
+        "terrain",
+        "dem",
+        "tin",
+        "等高线",
+        "地表",
+        "采坑",
+        "边坡",
+        "contour",
+        "breakline"
+      ],
+      "inputs": [
+        "survey XYZ",
+        "contour polylines",
+        "breaklines and pit limits"
+      ],
+      "outputs": [
+        "terrain TIN/DEM",
+        "terrain_metadata.json"
+      ],
+      "acceptance": [
+        "TIN/DEM covers the surveyed extent and preserves breaklines.",
+        "Independent check points meet the agreed elevation tolerance."
+      ],
+      "consumes": [
+        "survey_points",
+        "contours",
+        "cad_geometry",
+        "registered_points"
+      ],
+      "produces": [
+        "terrain_mesh",
+        "terrain_dem"
+      ],
+      "requires": [],
+      "dependsOn": []
+    },
+    {
+      "name": "mine-point-cloud",
+      "stage": "modeling",
+      "description": "Denoise, classify, register and rebuild surfaces from mine point clouds.",
+      "keywords": [
+        "点云",
+        "point cloud",
+        "las",
+        "laz",
+        "lidar",
+        "ply"
+      ],
+      "inputs": [
+        "LAS/LAZ/PLY point cloud",
+        "scan metadata"
+      ],
+      "outputs": [
+        "clean_point_cloud",
+        "terrain surface"
+      ],
+      "acceptance": [
+        "Ground classification and denoising parameters are documented.",
+        "Output extent and point count are reported."
+      ],
+      "consumes": [
+        "raw_point_cloud"
+      ],
+      "produces": [
+        "clean_point_cloud",
+        "terrain_mesh"
+      ],
+      "requires": [],
+      "dependsOn": []
+    },
+    {
+      "name": "mine-3d-modeling",
+      "stage": "modeling",
+      "description": "Generate and optimize mine meshes and export web-ready GLB/glTF.",
+      "keywords": [
+        "网格建模",
+        "三维建模",
+        "三维模型",
+        "模型生成",
+        "mesh",
+        "glb",
+        "gltf",
+        "3d model",
+        "实体模型"
+      ],
+      "inputs": [
+        "terrain mesh",
+        "registered CAD geometry",
+        "model assets"
+      ],
+      "outputs": [
+        "GLB/glTF model",
+        "model_manifest.json"
+      ],
+      "acceptance": [
+        "GLB has the correct scale, orientation and coordinate transform.",
+        "Mesh quality checks pass before export."
+      ],
+      "consumes": [
+        "terrain_mesh",
+        "terrain_dem",
+        "cad_geometry"
+      ],
+      "produces": [
+        "glb_model"
+      ],
+      "requires": [],
+      "dependsOn": []
+    },
+    {
+      "name": "mine-geological-modeling",
+      "stage": "modeling",
+      "description": "Build implicit geological models of strata, faults and ore bodies.",
+      "keywords": [
+        "地质",
+        "地层",
+        "断层",
+        "矿体",
+        "gempy",
+        "geological",
+        "borehole",
+        "钻孔"
+      ],
+      "inputs": [
+        "geological interfaces",
+        "dip measurements",
+        "borehole logs"
+      ],
+      "outputs": [
+        "geological_mesh",
+        "geological_model_report.json"
+      ],
+      "acceptance": [
+        "Input geological evidence and model uncertainty are reported.",
+        "Geology is never invented from terrain points alone."
+      ],
+      "consumes": [
+        "geological_inputs"
+      ],
+      "produces": [
+        "geological_mesh"
+      ],
+      "requires": [],
+      "dependsOn": []
+    },
+    {
+      "name": "mine-3d-tiles",
+      "stage": "tiling",
+      "description": "Convert meshes and point clouds into indexed 3D Tiles with LOD.",
+      "keywords": [
+        "3d tiles",
+        "3dtiles",
+        "切片",
+        "瓦片",
+        "tileset",
+        "tiling",
+        "lod"
+      ],
+      "inputs": [
+        "GLB/glTF mesh",
+        "point cloud",
+        "terrain mesh"
+      ],
+      "outputs": [
+        "tileset.json",
+        "3D Tiles dataset"
+      ],
+      "acceptance": [
+        "Tileset loads in Cesium and LOD levels are valid.",
+        "Bounding volumes and transforms are documented."
+      ],
+      "consumes": [
+        "glb_model",
+        "clean_point_cloud",
+        "terrain_mesh"
+      ],
+      "produces": [
+        "tileset"
+      ],
+      "requires": [],
+      "dependsOn": []
+    },
+    {
+      "name": "mine-3d-entity-binding",
+      "stage": "digital-twin",
+      "description": "Maintain three-layer binding between business entities, scene objects and model nodes.",
+      "keywords": [
+        "绑定",
+        "实体绑定",
+        "对象关联",
+        "binding",
+        "数字孪生",
+        "digital twin",
+        "三层映射"
+      ],
+      "inputs": [
+        "business entities",
+        "scene objects",
+        "model assets"
+      ],
+      "outputs": [
+        "entity_binding.json"
+      ],
+      "acceptance": [
+        "Every binding references existing entity, scene object and model node IDs.",
+        "Binding changes do not require editing models or business records."
+      ],
+      "consumes": [
+        "entity_registry",
+        "scene_objects",
+        "model_assets"
+      ],
+      "produces": [
+        "entity_binding"
+      ],
+      "requires": [],
+      "dependsOn": []
+    },
+    {
+      "name": "mine-iot-integration",
+      "stage": "integration",
+      "description": "Adapt existing IoT APIs into a unified twin event model.",
+      "keywords": [
+        "物联网",
+        "iot",
+        "thinglinks",
+        "数据接入",
+        "websocket",
+        "mqtt",
+        "遥测",
+        "telemetry",
+        "设备接入"
+      ],
+      "inputs": [
+        "ThingLinks/Spring Boot APIs",
+        "device registry"
+      ],
+      "outputs": [
+        "twin_event_contract.json",
+        "subscription_config.json"
+      ],
+      "acceptance": [
+        "Existing device IDs are reused; no duplicate IoT platform is created.",
+        "Event timestamps, sequence handling and reconnect snapshots are specified."
+      ],
+      "consumes": [
+        "device_registry",
+        "iot_api"
+      ],
+      "produces": [
+        "event_contract"
+      ],
+      "requires": [],
+      "dependsOn": []
+    },
+    {
+      "name": "mine-personnel-tracking",
+      "stage": "digital-twin",
+      "description": "Track mine personnel, convert positions and replay permission-aware tracks.",
+      "keywords": [
+        "人员",
+        "人员定位",
+        "人员轨迹",
+        "uwb",
+        "rfid",
+        "电子围栏",
+        "personnel"
+      ],
+      "inputs": [
+        "personnel registry",
+        "position events",
+        "entity bindings"
+      ],
+      "outputs": [
+        "personnel_positions",
+        "personnel_tracks"
+      ],
+      "acceptance": [
+        "Positions are converted through the approved coordinate adapter.",
+        "Track access is permission-checked and paginated."
+      ],
+      "consumes": [
+        "entity_binding",
+        "position_events"
+      ],
+      "produces": [
+        "personnel_positions",
+        "personnel_tracks"
+      ],
+      "requires": [
+        "entity_binding"
+      ],
+      "dependsOn": []
+    },
+    {
+      "name": "mine-safety-monitoring",
+      "stage": "digital-twin",
+      "description": "Manage monitoring metrics, thresholds, online status and alarms.",
+      "keywords": [
+        "安全监测",
+        "监测",
+        "传感器",
+        "告警",
+        "报警",
+        "甲烷",
+        "sensor",
+        "monitor",
+        "alarm"
+      ],
+      "inputs": [
+        "monitor device registry",
+        "telemetry events"
+      ],
+      "outputs": [
+        "monitor_metrics",
+        "alarm_events"
+      ],
+      "acceptance": [
+        "Thresholds come from device or rule configuration, not hardcoded examples.",
+        "Alarm states and stale data are distinguishable."
+      ],
+      "consumes": [
+        "entity_binding",
+        "telemetry_events"
+      ],
+      "produces": [
+        "monitor_metrics",
+        "alarm_events"
+      ],
+      "requires": [
+        "entity_binding"
+      ],
+      "dependsOn": []
+    },
+    {
+      "name": "mine-machinery-management",
+      "stage": "digital-twin",
+      "description": "Manage machinery position, heading, state, parameters and tracks.",
+      "keywords": [
+        "机械",
+        "矿卡",
+        "挖掘机",
+        "装载机",
+        "铲运机",
+        "推土机",
+        "machinery",
+        "truck",
+        "excavator",
+        "loader"
+      ],
+      "inputs": [
+        "machinery registry",
+        "telemetry",
+        "entity bindings"
+      ],
+      "outputs": [
+        "machinery_state",
+        "machinery_tracks"
+      ],
+      "acceptance": [
+        "Position, heading and state follow telemetry, not animation alone.",
+        "Simulated data is explicitly labelled."
+      ],
+      "consumes": [
+        "entity_binding",
+        "machinery_telemetry"
+      ],
+      "produces": [
+        "machinery_state",
+        "machinery_tracks"
+      ],
+      "requires": [
+        "entity_binding"
+      ],
+      "dependsOn": []
+    },
+    {
+      "name": "mine-cesium-visualization",
+      "stage": "visualization",
+      "description": "Build Cesium mine scenes with terrain, 3D Tiles, GLB and layer control.",
+      "keywords": [
+        "cesium",
+        "viewer",
+        "三维场景",
+        "场景加载",
+        "可视化",
+        "webgl",
+        "地形加载",
+        "模型加载"
+      ],
+      "inputs": [
+        "terrain",
+        "3D Tiles",
+        "GLB models",
+        "scene manifest"
+      ],
+      "outputs": [
+        "viewer_config.json",
+        "scene_manifest.json"
+      ],
+      "acceptance": [
+        "Scene validation passes and providers are self-hosted.",
+        "Layers toggle and release GPU resources."
+      ],
+      "consumes": [
+        "terrain_mesh",
+        "terrain_dem",
+        "tileset",
+        "glb_model",
+        "entity_binding"
+      ],
+      "produces": [
+        "viewer_config",
+        "scene_manifest"
+      ],
+      "requires": [],
+      "dependsOn": []
+    },
+    {
+      "name": "mine-scene-interaction",
+      "stage": "interaction",
+      "description": "Implement picking, selection, panels, fly-to, filtering and track playback.",
+      "keywords": [
+        "交互",
+        "点击",
+        "拾取",
+        "弹窗",
+        "高亮",
+        "筛选",
+        "飞行定位",
+        "flyto",
+        "轨迹回放",
+        "面板",
+        "interaction"
+      ],
+      "inputs": [
+        "scene manifest",
+        "entity bindings",
+        "event contract"
+      ],
+      "outputs": [
+        "interaction_contract.json",
+        "interaction_validation.json"
+      ],
+      "acceptance": [
+        "Interaction contract validation passes.",
+        "Handlers and listeners are disposed on scene switch."
+      ],
+      "consumes": [
+        "scene_manifest",
+        "entity_binding",
+        "event_contract"
+      ],
+      "produces": [
+        "interaction_contract"
+      ],
+      "requires": [
+        "entity_binding"
+      ],
+      "dependsOn": []
+    },
+    {
+      "name": "mine-model-quality-check",
+      "stage": "quality",
+      "description": "Independently verify mine model topology, geometry, elevations and registration.",
+      "keywords": [
+        "质量检查",
+        "模型质量",
+        "质检",
+        "模型检查",
+        "精度检查",
+        "拓扑检查",
+        "验收",
+        "quality",
+        "qa",
+        "校验模型"
+      ],
+      "inputs": [
+        "mesh or tileset",
+        "registration report",
+        "control points"
+      ],
+      "outputs": [
+        "quality_report.json",
+        "quality_report.md"
+      ],
+      "acceptance": [
+        "Topology, geometry, elevation and registration checks have evidence.",
+        "A failed quality gate stops delivery."
+      ],
+      "consumes": [
+        "glb_model",
+        "tileset",
+        "terrain_mesh",
+        "transformation",
+        "control_points"
+      ],
+      "produces": [
+        "quality_report"
+      ],
+      "requires": [],
+      "dependsOn": []
+    },
+    {
+      "name": "mine-project-orchestrator",
+      "stage": "orchestration",
+      "description": "Route requests to skills, plan steps and validate handoff contracts.",
+      "keywords": [
+        "编排",
+        "任务规划",
+        "orchestrate",
+        "技能路由",
+        "orchestrator"
+      ],
+      "inputs": [
+        "user request",
+        "skills manifest"
+      ],
+      "outputs": [
+        "task_plan.json",
+        "orchestration_report.md"
+      ],
+      "acceptance": [
+        "Every step has an owner, inputs, outputs and acceptance checks.",
+        "Handoff validation passes before execution."
+      ],
+      "consumes": [],
+      "produces": [
+        "task_plan"
+      ],
+      "requires": [],
+      "dependsOn": [],
+      "selectable": false
+    }
+  ]
+}

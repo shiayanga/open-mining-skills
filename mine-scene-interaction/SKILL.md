@@ -5,7 +5,7 @@ description: Implement Cesium scene interactions for the mine digital twin — p
 
 # Mine Scene Interaction
 
-> Status: skeleton — the workflow below is the intended contract; scripts and reference notes will be added in later iterations.
+> Status: v0.1 — `interaction_contract.json` / `bindings.json` validation and reference interaction patterns are implemented with tests. The Vue/Cesium frontend (handlers, panels, track runtime and permission execution) is documented but not yet generated or run by this skill.
 
 ## Role
 
@@ -13,22 +13,59 @@ You are a 3D interaction specialist for the mine digital twin. Your job is to tu
 
 ## Supported Input
 
-- Cesium scene module from `mine-cesium-visualization`
-- Entity bindings and scene object metadata
-- Business APIs and WebSocket event streams
-- UI panels, filters and permission configuration
-- Track and alarm data
+| Input | v0.1 behaviour |
+|---|---|
+| `interaction_contract.json` | Validated: handlers, entity types, panels, permission rules, event channels and track playback |
+| `bindings.json` | Optional; entity IDs and types cross-checked against the contract registry |
+| Vue/Cesium interaction module | Patterns in `references/interaction-patterns.md`; application generation is future work |
+| Business APIs / WebSocket streams | Referenced conceptually; not called by v0.1 |
+| Track and alarm data | Contract fields validated; no track data is fetched or replayed |
+| Permissions | Rules validated structurally; runtime enforcement is the backend's responsibility |
+
+## Quick Start
+
+Run the following commands from this skill directory. The validator uses the Python standard library only.
+
+```bash
+python3 scripts/validate_interactions.py \
+  tests/fixtures/interaction_contract.json \
+  --bindings tests/fixtures/bindings.json
+
+# Writes interaction_validation.json and interaction_validation.md
+# in the current directory.
+```
+
+Explicit output paths:
+
+```bash
+python3 scripts/validate_interactions.py interaction_contract.json \
+  --bindings bindings.json \
+  --output output/interaction_validation.json \
+  --markdown output/interaction_validation.md
+```
+
+Exit code `0` when there are no errors, `1` when validation fails. Warnings do not fail the run.
+
+## Options
+
+| Option | Default | Meaning |
+|---|---|---|
+| `contract` | required | Path to `interaction_contract.json` |
+| `--bindings` | off | Optional path to `bindings.json` |
+| `--output` | `interaction_validation.json` | JSON report path |
+| `--markdown` | `interaction_validation.md` | Markdown report path |
+| `--no-fail` | off | Exit `0` even when validation errors are found |
 
 ## Workflow
 
-1. Implement picking and convert picked primitives to scene object and entity IDs.
-2. Manage selection and highlight states, restoring previous states on change.
-3. Assemble info-panel data by entity type (person, device, machinery, infrastructure).
-4. Implement fly-to and view bookmarks for entities and areas.
-5. Implement filtering by person, department, area, device type and machinery type.
-6. Implement track playback with time controls and speed.
-7. Apply realtime updates through the event dispatcher.
-8. Apply permission-aware visibility and actions, and clean up listeners on unmount.
+1. Confirm the contract has a scene ID, mine ID and contract version.
+2. Validate handlers: unique IDs, supported types and valid entity types.
+3. Validate panel definitions: valid entity type and non-empty field list.
+4. Validate permission rules: known actions, valid entity types and track coverage.
+5. Validate event channels: unique IDs, non-empty names and resolvable handler references.
+6. Validate track playback defaults and per-handler overrides.
+7. If bindings are supplied, verify that every binding entity ID exists in the contract registry and its type matches.
+8. Emit `interaction_validation.json` and `interaction_validation.md`; use `references/interaction-patterns.md` for the future frontend implementation.
 
 ## Engineering Rules
 
@@ -37,28 +74,46 @@ You are a 3D interaction specialist for the mine digital twin. Your job is to tu
 - Throttle high-frequency updates and batch position changes.
 - Dispose handlers, listeners and timers when panels or scenes are destroyed.
 - Do not show data the current user is not authorized to see.
+- Pick only stable IDs from Cesium objects; never embed full business objects in pick metadata.
+- Treat personnel position and track data as sensitive by default.
+- Permission rules in the contract are UI guards; the server must enforce access on REST and WebSocket calls.
+- Do not claim the frontend is implemented until a runnable interaction module exists.
 
 ## Quality Requirements
 
-- Picking returns the correct object under overlapping geometry.
-- Info panels show data consistent with the source API.
-- No leaked listeners or timers after scene switches.
-- Interaction response and track playback meet the agreed performance budget.
-- No console errors during selection, filtering or playback.
+- Every handler has a unique ID and a supported type.
+- Every panel references a valid entity type and declares fields.
+- Permission actions are known and every tracked entity type has a `VIEW_TRACK` rule.
+- Realtime channel names are non-empty and all channel references resolve.
+- Track playback values are positive and finite.
+- Optional bindings reference existing entities with matching types.
+- Validation output is reproducible and records input SHA-256 checksums.
 
 ## Deliverables
 
-- `src/cesium/interactions/` module (`PickHandler`, `SelectionHandler`, `FlyToHandler`, `TrackHandler`)
-- `interaction_spec.md`
-- `interaction_checklist.md`
+- `interaction_validation.json`
+- `interaction_validation.md`
+- For project use: validated `interaction_contract.json` and optional `bindings.json`
 
 ## Project Layout
 
-- `scripts/` — executable checks and interaction utilities (to be added)
-- `references/` — interaction contracts, panel schemas and permission rules (to be added)
+- `scripts/validate_interactions.py` — contract/bindings validator and CLI
+- `scripts/common.py` — JSON I/O, hashing and formatting helpers
+- `references/interaction-patterns.md` — TypeScript patterns for pick, selection, fly-to, track, panels and permission-aware UI
+- `references/interaction-schema.md` — contract/bindings schema, rules and report fields
+- `tests/` — unittest suite and valid contract/bindings fixtures
+
+## Testing
+
+```bash
+python3 -m unittest discover -s tests -v
+```
+
+Run from this skill directory. No third-party packages are required.
 
 ## Related Skills
 
 - `mine-cesium-visualization` — rendering layer
 - `mine-3d-entity-binding` — object and entity association
 - `mine-personnel-tracking` / `mine-safety-monitoring` / `mine-machinery-management` — business data
+- `mine-iot-integration` — realtime channels and event contract

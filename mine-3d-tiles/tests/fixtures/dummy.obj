@@ -1,0 +1,5 @@
+# 3D Tiles publishing test content (Z-up)
+v 100 200 10
+v 110 200 12
+v 100 205 14
+f 1 2 3

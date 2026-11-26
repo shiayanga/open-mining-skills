@@ -1,0 +1,28 @@
+{
+  "entities": [
+    {
+      "entityId": "PERSON-001",
+      "entityType": "PERSON",
+      "mineId": "MINE-001",
+      "sceneId": "SCENE-001",
+      "name": "Miner A",
+      "coordinateSystemId": 1001
+    },
+    {
+      "entityId": "MACHINERY-001",
+      "entityType": "MACHINERY",
+      "mineId": "MINE-001",
+      "sceneId": "SCENE-001",
+      "name": "Excavator 1",
+      "coordinateSystemId": 1001
+    },
+    {
+      "entityId": "MONITOR-001",
+      "entityType": "MONITOR_DEVICE",
+      "mineId": "MINE-001",
+      "sceneId": "SCENE-001",
+      "name": "Methane sensor 1",
+      "coordinateSystemId": 1001
+    }
+  ]
+}

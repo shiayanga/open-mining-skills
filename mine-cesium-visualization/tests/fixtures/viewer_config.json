@@ -1,0 +1,35 @@
+{
+  "sceneId": "SCENE-001",
+  "terrainProvider": {
+    "type": "CesiumTerrainProvider",
+    "url": "/terrain",
+    "requestVertexNormals": true
+  },
+  "imageryProvider": {
+    "type": "UrlTemplateImageryProvider",
+    "url": "/imagery/{z}/{x}/{y}.png",
+    "credit": "Mine self-hosted imagery"
+  },
+  "scene": {
+    "origin": {
+      "x": 523400.0,
+      "y": 4187600.0,
+      "z": 120.0
+    },
+    "coordinateSystemId": "MINE-LOCAL-001",
+    "axisConvention": "X_EAST_Y_NORTH_Z_UP"
+  },
+  "rendering": {
+    "requestRenderMode": true,
+    "maximumScreenSpaceError": 16,
+    "resolutionScale": 1.0,
+    "fxaa": true,
+    "shadows": false,
+    "globeDepthTestAgainstTerrain": false
+  },
+  "performance": {
+    "tileCacheSize": 256,
+    "maximumRequests": 12,
+    "foveatedScreenSpaceError": true
+  }
+}
