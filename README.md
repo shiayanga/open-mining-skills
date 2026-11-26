@@ -38,7 +38,7 @@ Open Mining Skills 把矿山三维场景建设中的专业知识、数据处理�
 
 每个技能目录包含 `SKILL.md` 执行规范，以及 `scripts/`（可执行工具）和 `references/`（技术资料）目录。技能之间的依赖关系写在各文件末尾的 Related Skills 中。
 
-实现进度：`mine-data-inspection` v0.1 已提供可执行脚本与测试（DXF / XYZ 巡检），其余技能仍为骨架。
+实现进度：`mine-data-inspection` v0.1（DXF / XYZ 巡检）与 `mine-cad-parser` v0.1（DXF 几何提取）已提供可执行脚本与测试，其余技能仍为骨架。
 
 ## 使用方式
 
