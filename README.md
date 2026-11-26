@@ -36,7 +36,9 @@ Open Mining Skills 把矿山三维场景建设中的专业知识、数据处理�
 | 数字孪生业务 | [mine-machinery-management](mine-machinery-management/SKILL.md) | 工程机械位置、姿态、状态、轨迹与动画联动 |
 | 数字孪生业务 | [mine-3d-entity-binding](mine-3d-entity-binding/SKILL.md) | 业务实体 ↔ 场景对象 ↔ 模型节点的三层绑定 |
 
-每个技能目录包含 `SKILL.md` 执行规范，以及 `scripts/`（可执行工具）和 `references/`（技术资料）占位目录。技能之间的依赖关系写在各文件末尾的 Related Skills 中。
+每个技能目录包含 `SKILL.md` 执行规范，以及 `scripts/`（可执行工具）和 `references/`（技术资料）目录。技能之间的依赖关系写在各文件末尾的 Related Skills 中。
+
+实现进度：`mine-data-inspection` v0.1 已提供可执行脚本与测试（DXF / XYZ 巡检），其余技能仍为骨架。
 
 ## 使用方式
 
