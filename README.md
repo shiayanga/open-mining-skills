@@ -58,4 +58,4 @@ ln -s /path/to/open-mining-skills/mine-cad-parser .agents/skills/mine-cad-parser
 
 ## License
 
-MIT
+MIT License
